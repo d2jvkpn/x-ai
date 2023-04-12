@@ -10,6 +10,7 @@ import (
 )
 
 type Config struct {
+	Url     string `mapstructure:"url"`
 	API_Key string `mapstructure:"api_key"`
 	ORG_ID  string `mapstructure:"org_id"`
 	Proxy   string `mapstructure:"proxy"`
@@ -32,6 +33,9 @@ func NewConfg(fp, key string) (config *Config, err error) {
 	config = new(Config)
 	if err = vp.UnmarshalKey(key, config); err != nil {
 		return nil, err
+	}
+	if config.Url == "" {
+		config.Url = _Data.GetString("url")
 	}
 
 	return config, nil
@@ -78,7 +82,9 @@ func (client *Client) setAuth(request *http.Request, isJson bool) {
 		request.Header.Set("Content-Type", "application/json")
 	}
 
-	request.Header.Set("Authorization", "Bearer "+client.config.API_Key)
+	if client.config.API_Key != "" {
+		request.Header.Set("Authorization", "Bearer "+client.config.API_Key)
+	}
 
 	if client.config.ORG_ID != "" {
 		request.Header.Set("OpenAI-Organization", client.config.ORG_ID)

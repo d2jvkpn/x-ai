@@ -39,12 +39,7 @@ type ChatRes struct {
 	Choices []ChatChoice `json:"choices,omitempty"`
 }
 
-func (client *Client) Chat(ctx context.Context, req *ChatReq) (res *ChatRes, err error) {
-	var (
-		request  *http.Request
-		response *http.Response
-	)
-
+func (req *ChatReq) Validate() (err error) {
 	if req.Model == "" {
 		req.Model = default_model()
 	}
@@ -52,14 +47,23 @@ func (client *Client) Chat(ctx context.Context, req *ChatReq) (res *ChatRes, err
 		req.Temperature = default_temperature()
 	}
 	if len(req.Messages) == 0 {
-		return nil, fmt.Errorf("empty messages")
+		return fmt.Errorf("empty messages")
 	}
+
+	return nil
+}
+
+func (client *Client) Chat(ctx context.Context, req *ChatReq) (res *ChatRes, err error) {
+	var (
+		request  *http.Request
+		response *http.Response
+	)
 
 	buf := bytes.NewBuffer(nil)
 	encoder := json.NewEncoder(buf)
 	_ = encoder.Encode(req)
 
-	request, _ = http.NewRequest("POST", chat_url(), buf)
+	request, _ = http.NewRequest("POST", client.chat_url(), buf)
 	request.WithContext(ctx)
 	client.setAuth(request, true)
 	// fmt.Println("~~~", request)

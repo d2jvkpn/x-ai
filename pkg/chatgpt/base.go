@@ -41,14 +41,14 @@ func default_temperature() float32 {
 	return float32(_Data.GetFloat64("defaults.temperature"))
 }
 
-func chat_url() string {
-	return fmt.Sprintf("%s%s", _Data.GetString("url"), _Data.GetString("apis.completions"))
+func (client *Client) chat_url() string {
+	return fmt.Sprintf("%s%s", client.config.Url, _Data.GetString("apis.completions"))
 }
 
-func img_gen_url() string {
-	return fmt.Sprintf("%s%s", _Data.GetString("url"), _Data.GetString("apis.images_generations"))
+func (client *Client) img_gen_url() string {
+	return fmt.Sprintf("%s%s", client.config.Url, _Data.GetString("apis.images_generations"))
 }
 
-func img_edits_url() string {
-	return fmt.Sprintf("%s%s", _Data.GetString("url"), _Data.GetString("apis.images_edits"))
+func (client *Client) img_edits_url() string {
+	return fmt.Sprintf("%s%s", client.config.Url, _Data.GetString("apis.images_edits"))
 }

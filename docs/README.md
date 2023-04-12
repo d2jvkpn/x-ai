@@ -10,3 +10,6 @@
 - https://help.openai.com/en/articles/7042661-chatgpt-api-transition-guide
 - https://openai.com/blog/chatgpt
 - https://chat-gpt.org/chat
+- https://platform.openai.com/account/billing/overview
+- https://platform.openai.com/docs/quickstart
+- https://platform.openai.com/account/api-keys
