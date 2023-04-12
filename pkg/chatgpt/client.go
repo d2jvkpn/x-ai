@@ -1,6 +1,7 @@
 package chatgpt
 
 import (
+	"crypto/tls"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -10,10 +11,11 @@ import (
 )
 
 type Config struct {
-	Url     string `mapstructure:"url"`
-	API_Key string `mapstructure:"api_key"`
-	ORG_ID  string `mapstructure:"org_id"`
-	Proxy   string `mapstructure:"proxy"`
+	Url           string `mapstructure:"url"`
+	API_Key       string `mapstructure:"api_key"`
+	ORG_ID        string `mapstructure:"org_id"`
+	Proxy         string `mapstructure:"proxy"`
+	TlsSkipVerify bool   `mapstructure:"tls_skip_verify"`
 }
 
 type Client struct {
@@ -43,6 +45,7 @@ func NewConfg(fp, key string) (config *Config, err error) {
 
 func NewClient(fp, key string) (client *Client, err error) {
 	var (
+		cli      *http.Client
 		config   *Config
 		dialer   proxy.Dialer
 		proxyURL *url.URL
@@ -52,7 +55,14 @@ func NewClient(fp, key string) (client *Client, err error) {
 		return nil, err
 	}
 
-	client = &Client{config: config, cli: new(http.Client)}
+	cli = new(http.Client)
+	if config.TlsSkipVerify {
+		cli.Transport = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	}
+
+	client = &Client{config: config, cli: cli}
 
 	if config.Proxy == "" {
 		return client, nil
