@@ -1,4 +1,4 @@
-module github.com/d2jvkpn/ai-tools
+module github.com/d2jvkpn/x-ai
 
 go 1.20
 
