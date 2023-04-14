@@ -58,7 +58,7 @@ func NewClient(fp, key string) (client *Client, err error) {
 	cli = new(http.Client)
 	if config.TlsSkipVerify {
 		cli.Transport = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+			TLSClientConfig: &tls.Config{MinVersion: tls.VersionTLS12, InsecureSkipVerify: true},
 		}
 	}
 

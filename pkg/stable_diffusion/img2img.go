@@ -34,9 +34,9 @@ type Img2ImgRes struct {
 }
 
 func (req *Img2ImgReq) Validate() (err error) {
-	// if len(req.InitImages) == 0 {
-	// 	return fmt.Errorf("empty init_images")
-	// }
+	if len(req.InitImages) == 0 {
+		return fmt.Errorf("empty init_images")
+	}
 
 	if req.Width == 0 {
 		req.Width = 512
