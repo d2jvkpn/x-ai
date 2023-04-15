@@ -41,6 +41,10 @@ func default_temperature() float32 {
 	return float32(_Data.GetFloat64("defaults.temperature"))
 }
 
+func (client *Client) models() string {
+	return fmt.Sprintf("%s%s", client.config.Url, _Data.GetString("apis.models"))
+}
+
 func (client *Client) chat_url() string {
 	return fmt.Sprintf("%s%s", client.config.Url, _Data.GetString("apis.completions"))
 }
