@@ -15,3 +15,5 @@
 # vendor/
 
 wk*/
+configs/
+logs/

@@ -1,7 +1,10 @@
 package chatgpt
 
 import (
-// "fmt"
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
 )
 
 type Model struct {
@@ -32,4 +35,33 @@ type Permission struct {
 type ModelsRes struct {
 	Oobject string  `json:"object,omitempty"`
 	Data    []Model `json:"data,omitempty"`
+}
+
+func (client *Client) Models(ctx context.Context) (res *ModelsRes, err error) {
+	var (
+		request  *http.Request
+		response *http.Response
+	)
+
+	request, _ = http.NewRequest("GET", client.models_url(), nil)
+	request.WithContext(ctx)
+	client.setAuth(request, true)
+	// fmt.Println("~~~", request)
+
+	if response, err = client.cli.Do(request); err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(response.Status)
+	}
+
+	res = new(ModelsRes)
+	decoder := json.NewDecoder(response.Body)
+	if err = decoder.Decode(res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
