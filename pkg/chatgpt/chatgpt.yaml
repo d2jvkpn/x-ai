@@ -1,11 +1,16 @@
 config:
-  api_key: XXXXXXXX
-  org_id: XXXXXXXX
-  # proxy: (socks5|http|https)://localhost:1080
-  tls_skip_verify: false
+  demo_01:
+    api_key: x1111111
+    org_id: x22222222
+    # proxy: (socks5|http|https)://localhost:1080
+  demo_02:
+    url: https://127.0.0.1:8080
+    api_key: x1111111
+    tls_skip_verify: false
 
 version: 3.5.x
 url: https://api.openai.com
+
 defaults:
   model: gpt-3.5-turbo
   temperature: 0.7
