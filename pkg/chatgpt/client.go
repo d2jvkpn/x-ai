@@ -11,9 +11,10 @@ import (
 )
 
 type Config struct {
-	Url           string `mapstructure:"url"`
-	API_Key       string `mapstructure:"api_key"`
-	ORG_ID        string `mapstructure:"org_id"`
+	Url     string `mapstructure:"url"`
+	API_Key string `mapstructure:"api_key"`
+	ORG_ID  string `mapstructure:"org_id"`
+
 	Proxy         string `mapstructure:"proxy"`
 	TlsSkipVerify bool   `mapstructure:"tls_skip_verify"`
 }
