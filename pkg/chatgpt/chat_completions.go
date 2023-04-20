@@ -41,10 +41,10 @@ type ChatCompRes struct {
 
 func (req *ChatCompReq) Validate() (err error) {
 	if req.Model == "" {
-		req.Model = default_model()
+		req.Model = defaultChatModel()
 	}
 	if req.Temperature == 0 {
-		req.Temperature = default_temperature()
+		req.Temperature = defaultChatTemperature()
 	}
 	if len(req.Messages) == 0 {
 		return fmt.Errorf("empty messages")
@@ -63,7 +63,7 @@ func (client *Client) ChatCompletions(ctx context.Context, req *ChatCompReq) (re
 	encoder := json.NewEncoder(buf)
 	_ = encoder.Encode(req)
 
-	request, _ = http.NewRequest("POST", client.completions_url(), buf)
+	request, _ = http.NewRequest("POST", client.chatCompletionsUrl(), buf)
 	request.WithContext(ctx)
 	client.setAuth(request, true)
 	// fmt.Println("~~~", request)

@@ -63,7 +63,7 @@ func (client *Client) ImgGen(ctx context.Context, req *ImgGenReq) (res *ImgGenRe
 	encoder := json.NewEncoder(buf)
 	_ = encoder.Encode(req)
 
-	request, _ = http.NewRequest("POST", client.img_gen_url(), buf)
+	request, _ = http.NewRequest("POST", client.imgGenUrl(), buf)
 	request.WithContext(ctx)
 	client.setAuth(request, true)
 

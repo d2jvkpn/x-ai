@@ -7,8 +7,8 @@ import (
 
 func TestChat_t1(t *testing.T) {
 	req := &ChatCompReq{
-		Model:       default_model(),
-		Temperature: default_temperature(),
+		Model:       defaultChatModel(),
+		Temperature: defaultChatTemperature(),
 		Messages: []ChatCompMsg{
 			{Role: "user", Content: "How to implement a http server in golang?"},
 		},

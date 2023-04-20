@@ -43,7 +43,7 @@ func (client *Client) Models(ctx context.Context) (res *ModelsRes, err error) {
 		response *http.Response
 	)
 
-	request, _ = http.NewRequest("GET", client.models_url(), nil)
+	request, _ = http.NewRequest("GET", client.modelsUrl(), nil)
 	request.WithContext(ctx)
 	client.setAuth(request, true)
 	// fmt.Println("~~~", request)
