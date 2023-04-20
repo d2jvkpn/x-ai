@@ -8,25 +8,25 @@ import (
 	"net/http"
 )
 
-type CompMsg struct {
+type ChatCompMsg struct {
 	// enum: user, system, assistant
 	Role    string `json:"role"`
 	Content string `json:"content"`
 }
 
-type CompReq struct {
-	Model       string    `json:"model"`
-	Temperature float32   `json:"temperature"`
-	Messages    []CompMsg `json:"messages"`
+type ChatCompReq struct {
+	Model       string        `json:"model"`
+	Temperature float32       `json:"temperature"`
+	Messages    []ChatCompMsg `json:"messages"`
 }
 
-type CompChoice struct {
-	Message      CompMsg `json:"message,omitempty"`
-	FinishReason string  `json:"finish_reason,omitempty"`
-	Index        uint    `json:"index,omitempty"`
+type ChatCompChoice struct {
+	Message      ChatCompMsg `json:"message,omitempty"`
+	FinishReason string      `json:"finish_reason,omitempty"`
+	Index        uint        `json:"index,omitempty"`
 }
 
-type CompRes struct {
+type ChatCompRes struct {
 	Id      string `json:"id,omitempty"`
 	Object  string `json:"object,omitempty"`
 	Created int64  `json:"created,omitempty"`
@@ -36,10 +36,10 @@ type CompRes struct {
 		CompletionTokens uint32 `json:"completion_tokens,omitempty"`
 		TotalTokens      uint32 `json:"total_tokens,omitempty"`
 	} `json:"usage,omitempty"`
-	Choices []CompChoice `json:"choices,omitempty"`
+	Choices []ChatCompChoice `json:"choices,omitempty"`
 }
 
-func (req *CompReq) Validate() (err error) {
+func (req *ChatCompReq) Validate() (err error) {
 	if req.Model == "" {
 		req.Model = default_model()
 	}
@@ -53,7 +53,7 @@ func (req *CompReq) Validate() (err error) {
 	return nil
 }
 
-func (client *Client) Completions(ctx context.Context, req *CompReq) (res *CompRes, err error) {
+func (client *Client) ChatCompletions(ctx context.Context, req *ChatCompReq) (res *ChatCompRes, err error) {
 	var (
 		request  *http.Request
 		response *http.Response
@@ -77,7 +77,7 @@ func (client *Client) Completions(ctx context.Context, req *CompReq) (res *CompR
 		return nil, fmt.Errorf(response.Status)
 	}
 
-	res = new(CompRes)
+	res = new(ChatCompRes)
 	decoder := json.NewDecoder(response.Body)
 	if err = decoder.Decode(res); err != nil {
 		return nil, err

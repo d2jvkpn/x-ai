@@ -6,7 +6,7 @@ config:
   demo_02:
     url: https://127.0.0.1:8080
     api_key: x1111111
-    tls_skip_verify: false
+    tls_skip_verify: true
 
 version: 3.5.x
 url: https://api.openai.com

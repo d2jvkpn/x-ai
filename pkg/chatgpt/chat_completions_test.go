@@ -6,15 +6,15 @@ import (
 )
 
 func TestChat_t1(t *testing.T) {
-	req := &CompReq{
+	req := &ChatCompReq{
 		Model:       default_model(),
 		Temperature: default_temperature(),
-		Messages: []CompMsg{
+		Messages: []ChatCompMsg{
 			{Role: "user", Content: "How to implement a http server in golang?"},
 		},
 	}
 
-	ans, err := _TestClient.Completions(_TestCtx, req)
+	ans, err := _TestClient.ChatCompletions(_TestCtx, req)
 	if err != nil {
 		t.Fatal(err)
 	}
