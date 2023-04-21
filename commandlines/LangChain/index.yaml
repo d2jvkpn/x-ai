@@ -1,0 +1,3 @@
+langchain:
+  sources:
+  - {type: "pdf", source: "2023_GPT4All_Technical_Report.pdf"}
