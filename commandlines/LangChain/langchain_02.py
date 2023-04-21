@@ -76,8 +76,11 @@ for s in config["parameters"]["sources"]:
 texts = docs2texts(docs)
 # texts = pdf2texts(pdf)
 docsearch = FAISS.from_texts(texts, embeddings)
-# docsearch.save_local("./faiss_index", "my_index")
-# docsearch = FAISS.load_local("./faiss_index", embeddings, 'my_index')
+# index= "./faiss_index/index"
+# faiss_dir = os.path.dirname(index)
+# faiss_index = os.path.basename(index)
+# docsearch.save_local(faiss_dir, faiss_index)
+# docsearch = FAISS.load_local(faiss_dir, embeddings, faiss_index)
 
 ####
 result = {"queries": []}
