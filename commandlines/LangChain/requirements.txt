@@ -1,0 +1,8 @@
+pypdf
+PyPDF2
+tiktoken
+numpy
+openai[datalib]
+langchain
+openai
+faiss-cpu

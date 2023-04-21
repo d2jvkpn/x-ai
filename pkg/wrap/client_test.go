@@ -25,21 +25,15 @@ func TestClient(t *testing.T) {
 		log.Fatalln(err)
 	}
 
-	resp, err := client.CreateChatCompletion(
-		context.Background(),
-		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
-			Messages: []openai.ChatCompletionMessage{
-				{
-					Role:    openai.ChatMessageRoleUser,
-					Content: "Hello!",
-				},
-			},
-		},
-	)
+	req := openai.ChatCompletionRequest{
+		Model:    "gpt-3.5-turbo",
+		Messages: []openai.ChatCompletionMessage{{Role: "user", Content: "who are you?"}},
+	}
+
+	resp, err := client.CreateChatCompletion(context.Background(), req)
 
 	if err != nil {
-		fmt.Printf("ChatCompletion error: %v\n", err)
+		t.Fatalf("%v\n", err)
 		return
 	}
 
