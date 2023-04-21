@@ -1,31 +1,14 @@
-# pip install langchain openai PyPDF2 faiss-cpu
+# pip install pypdf PyPDF2 tiktoken numpy openai[datalib] langchain openai faiss-cpu
+# ? faiss-gpu
 import os, sys, yaml
 
+from langchain.chains.question_answering import load_qa_chain
+from langchain.chains.summarize import load_summarize_chain
 from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms import OpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS, ElasticVectorSearch, Pinecone, Weaviate
-from langchain.chains.question_answering import load_qa_chain
-from langchain.llms import OpenAI
-from langchain.chains.summarize import load_summarize_chain
-
-# yf, output = "config.yaml", "data/result.yaml"
-yf, output = sys.argv[1:3]
-
-f = open(yf , "r");
-config = yaml.safe_load(f)
-f.close()
-
-# os.environ['OPENAI_API_KEY'] = config["chatgpt"]["api_key"]
-# os.environ["OPENAI_API_BASE"] = config["chatgpt"]["url"]
-api_key = config["chatgpt"]["api_key"]
-llm = OpenAI(temperature=1, openai_api_key=api_key)
-embeddings = OpenAIEmbeddings(openai_api_key=api_key)
-
-# ! wget https://s3.amazonaws.com/static.nomic.ai/gpt4all/2023_GPT4All_Technical_Report.pdf
-pdf = config["parameters"]["files"][0]
-loader = PyPDFLoader(pdf)
-docs = loader.load()
 
 def pdf2texts(fp):
     loader = PyPDFLoader(fp)
@@ -62,11 +45,41 @@ def docs2texts(docs):
     texts = text_splitter.split_text(text=raw_text)
     return texts
 
-chain = load_qa_chain(llm, chain_type="stuff")
+####
+# yf, output = "configs/config.yaml", "data/result.yaml"
+yf, output = sys.argv[1:3]
 
-# texts = pdf2texts(pdf)
+f = open(yf , "r");
+config = yaml.safe_load(f)
+f.close()
+
+# os.environ['OPENAI_API_KEY'] = config["chatgpt"]["api_key"]
+# os.environ["OPENAI_API_BASE"] = config["chatgpt"]["url"]
+api_key = config["chatgpt"]["api_key"]
+llm = OpenAI(temperature=1, openai_api_key=api_key)
+chain = load_qa_chain(llm, chain_type="stuff")
+embeddings = OpenAIEmbeddings(openai_api_key=api_key)
+
+####
+# ! wget https://s3.amazonaws.com/static.nomic.ai/gpt4all/2023_GPT4All_Technical_Report.pdf
+#pdf = config["parameters"]["sources"][0]["source"]
+#loader = PyPDFLoader(pdf)
+#docs = loader.load()
+
+docs = []
+for s in config["parameters"]["sources"]:
+    # s["type"]
+    loader = PyPDFLoader(s["source"])
+    tmp = loader.load()
+    docs.extend(tmp)
+
 texts = docs2texts(docs)
+# texts = pdf2texts(pdf)
 docsearch = FAISS.from_texts(texts, embeddings)
+# docsearch.save_local("./faiss_index", "my_index")
+# docsearch = FAISS.load_local("./faiss_index", embeddings, 'my_index')
+
+####
 result = {"queries": []}
 
 for q in config["parameters"]["queries"]:
@@ -81,6 +94,5 @@ if config["parameters"]["summarize"]:
     result["summary"] = ans.strip()
 
 os.makedirs(os.path.dirname(output), exist_ok=True)
-
 with open(output, 'w') as f:
     yaml.dump(result, f, default_flow_style=False)

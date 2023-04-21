@@ -1,0 +1,10 @@
+chatgpt:
+  api_key: sk-YourKey
+
+parameters:
+  sources:
+  - { type: pdf, source: "2023_GPT4All_Technical_Report.pdf" }
+  summarize: true
+  queries:
+  - "who are the authors of the article"
+  - "What was the cost of trainning the GPTall model"
