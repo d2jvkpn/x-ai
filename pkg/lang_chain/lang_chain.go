@@ -16,19 +16,15 @@ type LCC struct {
 	py_index, py_query string
 }
 
-func (lcc *LCC) base() string {
-	return "lang_chain"
-}
-
 func NewLCC(key, path string) (lcc *LCC, err error) {
-	if err = os.MkdirAll(filepath.Join(path, lcc.base()), 0755); err != nil {
+	if err = os.MkdirAll(path, 0755); err != nil {
 		return nil, err
 	}
 
 	lcc = &LCC{
 		openai_api_key: key,
-		py_index:       filepath.Join(path, lcc.base(), "langchain_index.py"),
-		py_query:       filepath.Join(path, lcc.base(), "langchain_query.py"),
+		py_index:       filepath.Join(path, "langchain_index.py"),
+		py_query:       filepath.Join(path, "langchain_query.py"),
 	}
 
 	if err = ioutil.WriteFile(lcc.py_index, _LangchainIndex, 0764); err != nil {
