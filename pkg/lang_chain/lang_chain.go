@@ -11,13 +11,13 @@ import (
 )
 
 // Lang Chain Client
-type LCC struct {
+type LangChain struct {
 	openai_api_key     string
 	path               string
 	py_index, py_query string
 }
 
-func NewLCC(key, path string) (lcc *LCC, err error) {
+func NewLangChain(key, path string) (lc *LangChain, err error) {
 	if err = os.MkdirAll(path, 0755); err != nil {
 		return nil, err
 	}
@@ -26,39 +26,39 @@ func NewLCC(key, path string) (lcc *LCC, err error) {
 		return nil, err
 	}
 
-	lcc = &LCC{
+	lc = &LangChain{
 		openai_api_key: key,
 		path:           path,
 		py_index:       filepath.Join(path, "langchain_index.py"),
 		py_query:       filepath.Join(path, "langchain_query.py"),
 	}
 
-	if err = ioutil.WriteFile(lcc.py_index, _LangchainIndex, 0764); err != nil {
+	if err = ioutil.WriteFile(lc.py_index, _LangchainIndex, 0764); err != nil {
 		return nil, err
 	}
 
-	if err = ioutil.WriteFile(lcc.py_query, _LangchainQuery, 0764); err != nil {
+	if err = ioutil.WriteFile(lc.py_query, _LangchainQuery, 0764); err != nil {
 		return nil, err
 	}
 
-	return lcc, nil
+	return lc, nil
 }
 
-func (lcc *LCC) env() []string {
+func (lc *LangChain) env() []string {
 	return []string{
-		fmt.Sprintf("OPENAI_API_KEY=%s", lcc.openai_api_key),
+		fmt.Sprintf("OPENAI_API_KEY=%s", lc.openai_api_key),
 	}
 }
 
-func (lcc *LCC) PyIndex(ctx context.Context, cf, prefix string) (err error) {
-	cmd := exec.CommandContext(ctx, "python3", lcc.py_index, cf, prefix)
-	cmd.Env = append(cmd.Env, lcc.env()...)
+func (lc *LangChain) PyIndex(ctx context.Context, cf, prefix string) (err error) {
+	cmd := exec.CommandContext(ctx, "python3", lc.py_index, cf, prefix)
+	cmd.Env = append(cmd.Env, lc.env()...)
 	return cmd.Run()
 }
 
-func (lcc *LCC) PyQuery(ctx context.Context, prefix, query string) (ans string, err error) {
-	cmd := exec.CommandContext(ctx, "python3", lcc.py_index, prefix, query)
-	cmd.Env = append(cmd.Env, lcc.env()...)
+func (lc *LangChain) PyQuery(ctx context.Context, prefix, query string) (ans string, err error) {
+	cmd := exec.CommandContext(ctx, "python3", lc.py_index, prefix, query)
+	cmd.Env = append(cmd.Env, lc.env()...)
 
 	buf := bytes.NewBuffer(nil)
 	cmd.Stdout = buf

@@ -9,20 +9,20 @@ import (
 	"testing"
 )
 
-func TestLCC(t *testing.T) {
-	lcc, err := NewLCC("sk-xxxx", "./wk")
+func TestLangChain(t *testing.T) {
+	lc, err := NewLangChain("sk-xxxx", "./wk")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	fmt.Printf("LCC: %v\n", lcc)
+	fmt.Printf("LangChain: %v\n", lc)
 
-	_, err = os.Stat("./wk/lang_chain/langchain_index.py")
+	_, err = os.Stat("./wk/langchain_index.py")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	_, err = os.Stat("./wk/lang_chain/langchain_query.py")
+	_, err = os.Stat("./wk/langchain_query.py")
 	if err != nil {
 		t.Fatal(err)
 	}
