@@ -12,22 +12,21 @@ langchain:
 """
 
 ####
-cf = sys.argv[1]
-prefix = ""
+cf, prefix = sys.argv[1:3]
 
 f = open(cf, "r")
 
-if cf.endswith(".json"):
-    config = json.loads(f.read())
-    prefix = cf[:-5]
-elif cf.endswith(".yaml"):
-    config = yaml.safe_load(f)
-    prefix = cf[:-5]
-elif cf.endswith(".yml"):
-    config = yaml.safe_load(f)
-    prefix = cf[:-4]
-else:
-    sys.exit("unknown input file type")
+#if cf.endswith(".json"):
+#    config = json.loads(f.read())
+#    prefix = cf[:-5]
+#elif cf.endswith(".yaml"):
+#    config = yaml.safe_load(f)
+#    prefix = cf[:-5]
+#elif cf.endswith(".yml"):
+#    config = yaml.safe_load(f)
+#    prefix = cf[:-4]
+#else:
+#    sys.exit("unknown input file type")
 
 f.close()
 
@@ -47,9 +46,12 @@ text_splitter = CharacterTextSplitter(
   length_function = len,
 )
 
-texts = text_splitter.split_text(text="\n".join(text_docs))
+chunks = []
+for d in text_docs:
+    chunks.extend(text_splitter.split_text(d))
+# sum([[1, 2], [3, 4]], [])
 
-faiss_index = FAISS.from_texts(texts, embeddings)
+faiss_index = FAISS.from_texts(chunks, embeddings)
 fdir = os.path.dirname(prefix)
 fname = os.path.basename(prefix)
 faiss_index.save_local(fdir, fname)
