@@ -56,7 +56,6 @@ func (lcc *LCC) PyIndex(ctx context.Context, cf, prefix string) (err error) {
 
 func (lcc *LCC) PyQuery(ctx context.Context, prefix, query string) (ans string, err error) {
 	cmd := exec.CommandContext(ctx, "python3", lcc.py_index, prefix, query)
-
 	cmd.Env = append(cmd.Env, lcc.env()...)
 
 	buf := bytes.NewBuffer(nil)
