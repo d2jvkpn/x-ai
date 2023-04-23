@@ -13,6 +13,7 @@ import (
 // Lang Chain Client
 type LCC struct {
 	openai_api_key     string
+	path               string
 	py_index, py_query string
 }
 
@@ -21,8 +22,13 @@ func NewLCC(key, path string) (lcc *LCC, err error) {
 		return nil, err
 	}
 
+	if path, err = filepath.Abs(path); err != nil {
+		return nil, err
+	}
+
 	lcc = &LCC{
 		openai_api_key: key,
+		path:           path,
 		py_index:       filepath.Join(path, "langchain_index.py"),
 		py_query:       filepath.Join(path, "langchain_query.py"),
 	}
