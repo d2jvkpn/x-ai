@@ -20,7 +20,7 @@ func (lcc *LCC) base() string {
 	return "lang_chain"
 }
 
-func NewLLC(key, path string) (lcc *LCC, err error) {
+func NewLCC(key, path string) (lcc *LCC, err error) {
 	if err = os.MkdirAll(filepath.Join(path, lcc.base()), 0755); err != nil {
 		return nil, err
 	}

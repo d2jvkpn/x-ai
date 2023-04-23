@@ -10,7 +10,7 @@ import (
 )
 
 func TestLCC(t *testing.T) {
-	lcc, err := NewLLC("sk-xxxx", "./wk")
+	lcc, err := NewLCC("sk-xxxx", "./wk")
 	if err != nil {
 		t.Fatal(err)
 	}
