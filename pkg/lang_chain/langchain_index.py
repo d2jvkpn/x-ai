@@ -19,7 +19,7 @@ cfd = os.path.dirname(cf)
 
 api_key = os.environ.get('OPENAI_API_KEY')
 if api_key is None:
-     sys.exit("OPENAI_API_KEY is unset")
+    sys.exit("OPENAI_API_KEY is unset")
 
 f = open(cf, "r")
 
