@@ -19,7 +19,7 @@ fdir = os.path.dirname(prefix)
 fname = os.path.basename(prefix)
 faiss_index = FAISS.load_local(fdir, embeddings, fname)
 
-ss = faiss_index.similarity_search(query.strip(), k=2)
+ss = faiss_index.similarity_search(query.strip(), k=5)
 ans = chain.run(input_documents=ss, question=query)
 
 print(ans.strip())
