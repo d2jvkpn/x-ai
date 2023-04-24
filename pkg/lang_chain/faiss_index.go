@@ -11,6 +11,7 @@ import (
 
 type FaissIndex struct {
 	Id      uuid.UUID `json:"id" yaml:"id"`
+	UtcTime time.Time `json:"-" yaml:"-"`
 	Created int64     `json:"created" yaml:"created"`
 	Sources []Source  `json:"sources" yaml:"sources"`
 }
@@ -32,9 +33,12 @@ func NewFaissIndex(sources []Source) (index *FaissIndex, err error) {
 		return nil, err
 	}
 
+	now := time.Now().UTC()
+
 	return &FaissIndex{
 		Id:      id,
-		Created: time.Now().Unix(),
+		UtcTime: now,
+		Created: now.Unix(),
 		Sources: sources,
 	}, nil
 }

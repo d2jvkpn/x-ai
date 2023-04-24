@@ -44,6 +44,11 @@ func NewLangChain(key, path string) (lc *LangChain, err error) {
 	return lc, nil
 }
 
+func (lc *LangChain) SubPath(elem ...string) string {
+	list := append([]string{lc.path}, elem...)
+	return filepath.Join(list...)
+}
+
 func (lc *LangChain) env() []string {
 	return []string{
 		fmt.Sprintf("OPENAI_API_KEY=%s", lc.openai_api_key),
