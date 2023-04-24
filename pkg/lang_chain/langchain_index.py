@@ -1,6 +1,5 @@
-import os, sys, json
+import os, sys, json, yaml, textract
 
-import yaml, textract
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS

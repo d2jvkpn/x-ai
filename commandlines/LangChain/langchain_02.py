@@ -57,7 +57,7 @@ f.close()
 # os.environ["OPENAI_API_BASE"] = config["chatgpt"]["url"]
 api_key = config["chatgpt"]["api_key"]
 llm = OpenAI(temperature=1, openai_api_key=api_key)
-chain = load_qa_chain(llm, chain_type="stuff")
+
 embeddings = OpenAIEmbeddings(openai_api_key=api_key)
 
 ####
@@ -85,15 +85,17 @@ docsearch = FAISS.from_texts(texts, embeddings)
 ####
 result = {"queries": []}
 
+qa_chain = load_qa_chain(llm, chain_type="stuff")
+summarize_chain = load_summarize_chain(llm, chain_type="map_reduce", verbose=True)
+
 for q in config["parameters"]["queries"]:
     q = q.strip()
     ss = docsearch.similarity_search(q, k=2)
-    ans = chain.run(input_documents=ss, question=q)
+    ans = qa_chain.run(input_documents=ss, question=q)
     result["queries"].append({"query": q, "answer": ans.strip()})
 
 if config["parameters"]["summarize"]:
-    chain = load_summarize_chain(llm, chain_type="map_reduce", verbose=True)
-    ans = chain.run(docs).strip()
+    ans = summarize_chain.run(docs).strip()
     result["summary"] = ans.strip()
 
 os.makedirs(os.path.dirname(output), exist_ok=True)

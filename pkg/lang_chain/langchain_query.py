@@ -13,13 +13,13 @@ if api_key is None:
 
 embeddings = OpenAIEmbeddings(openai_api_key=api_key)
 llm = OpenAI(temperature=1, openai_api_key=api_key)
-chain = load_qa_chain(llm, chain_type="stuff")
+qa_chain = load_qa_chain(llm, chain_type="stuff")
 
 fdir = os.path.dirname(prefix)
 fname = os.path.basename(prefix)
 faiss_index = FAISS.load_local(fdir, embeddings, fname)
 
 ss = faiss_index.similarity_search(query.strip(), k=5)
-ans = chain.run(input_documents=ss, question=query)
+ans = qa_chain.run(input_documents=ss, question=query)
 
 print(ans.strip())

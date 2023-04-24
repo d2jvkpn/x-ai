@@ -17,9 +17,10 @@ type FaissIndex struct {
 }
 
 type Source struct {
-	Name   string `json:"name"   yaml:"name"`
+	Title  string `json:"title"  yaml:"title"`
 	Type   string `json:"type"   yaml:"type"`
 	Source string `json:"source" yaml:"source"`
+	Size   int64  `json:"size"   yaml:"size"`
 }
 
 func NewFaissIndex(sources []Source) (index *FaissIndex, err error) {
