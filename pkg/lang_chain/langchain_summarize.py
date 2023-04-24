@@ -21,5 +21,6 @@ docs = []
 for text in text_splitter.split_text(content.decode()):
     docs.append(Document(page_content=text.strip()))
 
+# This model's maximum context length is 4097 tokens, however you requested 8700 tokens (8444 in your prompt; 256 for the completion). Please reduce your prompt; or completion length.
 ans = summarize_chain.run(docs)
-println(ans.strip())
+print(ans.strip())
