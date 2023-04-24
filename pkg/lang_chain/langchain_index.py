@@ -6,8 +6,11 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS
 
 """
+config file a01.yaml
+```yaml
 sources:
-- {name: "2023_GPT4All_Technical_Report", type: "pdf", source: "2023_GPT4All_Technical_Report.pdf"}
+- {name: "2023_GPT4All_Technical_Report", type: "pdf", source: "a01_01.pdf"}
+```
 """
 
 ####
