@@ -26,6 +26,14 @@ func NewLangChain(key, path string) (lc *LangChain, err error) {
 		return nil, err
 	}
 
+	if key == "" {
+		return nil, fmt.Errorf("key is empty")
+	}
+
+	if _, err = exec.LookPath("python3"); err != nil {
+		return nil, err
+	}
+
 	lc = &LangChain{
 		openai_api_key: key,
 		path:           path,
