@@ -44,9 +44,8 @@ func NewLangChain(key, path string) (lc *LangChain, err error) {
 	return lc, nil
 }
 
-func (lc *LangChain) SubPath(elem ...string) string {
-	list := append([]string{lc.path}, elem...)
-	return filepath.Join(list...)
+func (lc *LangChain) GetPath() string {
+	return lc.path
 }
 
 func (lc *LangChain) env() []string {
