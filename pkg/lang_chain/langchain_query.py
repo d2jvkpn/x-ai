@@ -12,7 +12,7 @@ if api_key is None:
     sys.exit("OPENAI_API_KEY is unset")
 
 embeddings = OpenAIEmbeddings(openai_api_key=api_key)
-llm = OpenAI(temperature=1, openai_api_key=api_key)
+llm = OpenAI(temperature=0.7, openai_api_key=api_key)
 qa_chain = load_qa_chain(llm, chain_type="stuff")
 
 fdir = os.path.dirname(prefix)
