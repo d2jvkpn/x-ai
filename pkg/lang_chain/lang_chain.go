@@ -40,7 +40,7 @@ func NewLangChain(key, path string) (lc *LangChain, err error) {
 		path:           path,
 		py_index:       filepath.Join(path, "langchain_index.py"),
 		py_query:       filepath.Join(path, "langchain_query.py"),
-		env:            append(os.Environ(), fmt.Sprintf("OPENAI_API_KEY=%s", lc.openai_api_key)),
+		env:            append(os.Environ(), fmt.Sprintf("OPENAI_API_KEY=%s", key)),
 	}
 
 	if err = ioutil.WriteFile(lc.py_index, _LangchainIndex, 0764); err != nil {
