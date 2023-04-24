@@ -17,6 +17,10 @@ sources:
 cf, prefix = sys.argv[1:3]
 cfd = os.path.dirname(cf)
 
+api_key = os.environ.get('OPENAI_API_KEY')
+if api_key is None:
+     sys.exit("OPENAI_API_KEY is unset")
+
 f = open(cf, "r")
 
 if cf.endswith(".json"):
@@ -33,7 +37,6 @@ else:
 
 f.close()
 
-api_key = os.environ['OPENAI_API_KEY']
 embeddings = OpenAIEmbeddings(openai_api_key=api_key)
 
 text_docs = []

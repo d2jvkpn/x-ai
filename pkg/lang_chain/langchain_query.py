@@ -7,7 +7,10 @@ from langchain.vectorstores import FAISS
 
 prefix, query = sys.argv[1:3]
 
-api_key = os.environ['OPENAI_API_KEY']
+api_key = os.environ.get('OPENAI_API_KEY')
+if api_key is None:
+     sys.exit("OPENAI_API_KEY is unset")
+
 embeddings = OpenAIEmbeddings(openai_api_key=api_key)
 llm = OpenAI(temperature=1, openai_api_key=api_key)
 chain = load_qa_chain(llm, chain_type="stuff")

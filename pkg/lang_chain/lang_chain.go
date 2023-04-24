@@ -61,7 +61,7 @@ func (lc *LangChain) PyIndex(ctx context.Context, cf, prefix string) (err error)
 }
 
 func (lc *LangChain) PyQuery(ctx context.Context, prefix, query string) (ans string, err error) {
-	cmd := exec.CommandContext(ctx, "python3", lc.py_index, prefix, query)
+	cmd := exec.CommandContext(ctx, "python3", lc.py_query, prefix, query)
 	cmd.Env = append(cmd.Env, lc.env()...)
 
 	buf := bytes.NewBuffer(nil)
