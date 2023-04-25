@@ -1,7 +1,8 @@
 import os, sys, json, yaml, textract
 
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
+# from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import TokenTextSplitter
 from langchain.vectorstores import FAISS
 
 """
@@ -45,10 +46,16 @@ for d in config["sources"]:
     text = textract.process(source)
     text_docs.append(text.decode().strip())
 
-text_splitter = CharacterTextSplitter(
-  separator = "\n",
-  chunk_size = 1000,
-  chunk_overlap = 200,
+#text_splitter = CharacterTextSplitter(
+#  separator = "\n",
+#  chunk_size = 1000,
+#  chunk_overlap = 100,
+#  length_function = len,
+#)
+
+text_splitter = TokenTextSplitter(
+  chunk_size = 500,
+  chunk_overlap = 50,
   length_function = len,
 )
 

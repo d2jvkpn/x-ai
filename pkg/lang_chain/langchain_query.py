@@ -19,6 +19,7 @@ fdir = os.path.dirname(prefix)
 fname = os.path.basename(prefix)
 faiss_index = FAISS.load_local(fdir, embeddings, fname)
 
+# This model's maximum context length is 4097 tokens, 256 for the completion
 ss = faiss_index.similarity_search(query.strip(), k=5)
 ans = qa_chain.run(input_documents=ss, question=query)
 
