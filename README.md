@@ -4,3 +4,4 @@
 Items
 - chatgpt;
 - stable-diffusion;
+- langchain;
