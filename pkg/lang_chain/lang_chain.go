@@ -38,14 +38,16 @@ func NewLangChain(key, path string) (lc *LangChain, err error) {
 	lc = &LangChain{
 		openai_api_key: key,
 		path:           path,
-		scripts:        make(map[string]string, len(_Scripts)),
-		env:            append(os.Environ(), fmt.Sprintf("OPENAI_API_KEY=%s", key)),
+
+		scripts: make(map[string]string, len(_Scripts)),
+		env:     append(os.Environ(), fmt.Sprintf("OPENAI_API_KEY=%s", key)),
 	}
 
 	for k, v := range _Scripts {
-		if err = ioutil.WriteFile(filepath.Join(path, k), v, 0764); err != nil {
+		if err = ioutil.WriteFile(filepath.Join(path, k), v, 0755); err != nil {
 			return nil, err
 		}
+		lc.scripts[k] = filepath.Join(path, k)
 	}
 
 	return lc, nil
