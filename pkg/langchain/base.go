@@ -1,4 +1,4 @@
-package lang_chain
+package langchain
 
 import (
 	_ "embed"
