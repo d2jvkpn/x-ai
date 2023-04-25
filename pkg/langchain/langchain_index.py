@@ -6,10 +6,10 @@ from langchain.text_splitter import TokenTextSplitter
 from langchain.vectorstores import FAISS
 
 """
-config file a01.yaml
+config file UUID.yaml
 ```yaml
 sources:
-- {name: "2023_GPT4All_Technical_Report", type: "pdf", source: "a01_01.pdf"}
+- { title: "2023_GPT4All_Technical_Report", type: "pdf", source: "UUID_doc001.pdf", size: 3651423 }
 ```
 """
 
