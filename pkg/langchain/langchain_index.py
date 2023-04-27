@@ -8,6 +8,9 @@ from langchain.vectorstores import FAISS
 """
 config file UUID.yaml
 ```yaml
+id: UUID
+title: 2023 GPT4All Technical Report
+created: 1682391010
 sources:
 - { title: "2023_GPT4All_Technical_Report", type: "pdf", source: "UUID_doc001.pdf", size: 3651423 }
 ```

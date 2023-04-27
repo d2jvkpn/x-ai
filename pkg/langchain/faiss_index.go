@@ -11,6 +11,7 @@ import (
 
 type FaissIndex struct {
 	Id      uuid.UUID `json:"id" yaml:"id"`
+	Title   string    `json:"title,omitempty" yaml:"title,omitempty"`
 	UtcTime time.Time `json:"-" yaml:"-"`
 	Created int64     `json:"created" yaml:"created"`
 	Sources []Source  `json:"sources" yaml:"sources"`
@@ -20,7 +21,7 @@ type Source struct {
 	Title  string `json:"title"  yaml:"title"`
 	Type   string `json:"type"   yaml:"type"`
 	Source string `json:"source" yaml:"source"`
-	Size   int64  `json:"size"   yaml:"size"`
+	Size   int64  `json:"size,omitempty" yaml:"size,omitempty"`
 }
 
 func NewFaissIndex(sources []Source) (index *FaissIndex, err error) {
