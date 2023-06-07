@@ -45,3 +45,13 @@ func NewClient(fp, key string) (client *Client, err error) {
 
 	return client, nil
 }
+
+func ClientFromViper(vp *viper.Viper, field string) (client *Client, err error) {
+	var config Config
+
+	if err = vp.UnmarshalKey(field, &config); err != nil {
+		return nil, err
+	}
+
+	return &Client{config: &config, cli: new(http.Client)}, nil
+}

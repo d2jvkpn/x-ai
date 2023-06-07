@@ -7,6 +7,7 @@ type Extension interface {
 
 type Extensions struct {
 	Controlnet *Controlnet `json:"controlnet,omitempty"`
+	// more...
 }
 
 func (exts *Extensions) HasControlnetImg() bool {
@@ -61,7 +62,7 @@ func (item *Controlnet) Value() map[string]any {
 func (exts *Extensions) List() (results []Extension) {
 	results = make([]Extension, 0)
 
-	if exts.Controlnet != nil {
+	if exts.Controlnet != nil && exts.Controlnet.InputImage != "" {
 		results = append(results, exts.Controlnet)
 	}
 
