@@ -25,7 +25,16 @@ func TestControlnet(t *testing.T) {
 		InitImages: []string{simg},
 		BatchSize:  4,
 	}
-	cn := _TestClient.NewControlnet(cimg)
+
+	conf := _TestClient.config
+	cn := &Controlnet{
+		InputImage: cimg,
+		Module:     conf.Controlnet.Module,
+		Model:      conf.Controlnet.Models[0],
+	}
+	if err := _TestClient.ValidateControlnet(cn); err != nil {
+		t.Fatal(err)
+	}
 
 	res, err := _TestClient.Img2Img(_TestCtx, req, cn)
 	if err != nil {

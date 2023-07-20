@@ -8,8 +8,11 @@ import (
 )
 
 type Config struct {
-	Url        string     `mapstructure:"url"`
-	Controlnet Controlnet `mapstructure:"controlnet"`
+	Url        string `mapstructure:"url"`
+	Controlnet struct {
+		Module string   `mapstructure:"module"`
+		Models []string `mapstructure:"models"`
+	} `mapstructure:"controlnet"`
 }
 
 type Client struct {
@@ -29,6 +32,14 @@ func NewConfg(fp, key string) (config *Config, err error) {
 	config = new(Config)
 	if err = vp.UnmarshalKey(key, config); err != nil {
 		return nil, err
+	}
+
+	if config.Controlnet.Module == "" {
+		return nil, fmt.Errorf("controlnet.module is unset")
+	}
+
+	if len(config.Controlnet.Models) == 0 {
+		return nil, fmt.Errorf("controlnet.models is empty")
 	}
 
 	return config, nil
@@ -54,4 +65,32 @@ func ClientFromViper(vp *viper.Viper, field string) (client *Client, err error) 
 	}
 
 	return &Client{config: &config, cli: new(http.Client)}, nil
+}
+
+func (client *Client) ValidateControlnet(item *Controlnet) (err error) {
+	cn := &client.config.Controlnet
+	if len(item.InputImage) == 0 {
+		return fmt.Errorf("has no input_image")
+	}
+
+	if item.Module == "" {
+		item.Module = cn.Module
+	}
+
+	if item.Model == "" {
+		return fmt.Errorf("model is unset")
+	}
+
+	match := false
+	for i := range cn.Models {
+		if cn.Models[i] == item.Model {
+			match = true
+			break
+		}
+	}
+	if !match {
+		return fmt.Errorf("model is invalid")
+	}
+
+	return nil
 }

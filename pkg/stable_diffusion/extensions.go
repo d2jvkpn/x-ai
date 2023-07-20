@@ -68,9 +68,3 @@ func (exts *Extensions) List() (results []Extension) {
 
 	return results
 }
-
-func (client *Client) NewControlnet(b64img string) *Controlnet {
-	cn := client.config.Controlnet
-	cn.InputImage = b64img
-	return &cn
-}

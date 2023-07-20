@@ -2,15 +2,15 @@ config:
   url: http://127.0.0.1:7860
   controlnet:
     module: canny
-    model: control_sd15_canny
+    models: [control_sd15_canny, control_sd15_depth, control_sd15_mlsd]
 
 version: 2.x.x
 apis:
   txt2img: /sdapi/v1/txt2img
   img2img: /sdapi/v1/img2img
   interrogate: /sdapi/v1/interrogate
-  controlnet_txt2img: /controlnet/txt2img
-  controlnet_img2img: /controlnet/img2img
+  # controlnet_txt2img: /controlnet/txt2img
+  # controlnet_img2img: /controlnet/img2img
 
 references:
 - https://towardsdatascience.com/stable-diffusion-as-an-api-5e381aec1f6

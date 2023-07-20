@@ -9,9 +9,9 @@ import (
 func testControlnetUnit(b64img string) ControlnetUnit {
 	return ControlnetUnit{
 		InputImage: b64img,
-		Module: "depth",
-		Model: "control_sd15_depth [fef5e48e]",
-		Guidance: 1.0,
+		Module:     "depth",
+		Model:      "control_sd15_depth [fef5e48e]",
+		Guidance:   1.0,
 	}
 }
 
