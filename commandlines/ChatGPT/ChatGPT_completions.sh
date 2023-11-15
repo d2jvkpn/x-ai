@@ -38,8 +38,7 @@ jq -n \
 
 set_proxy=""
 # CURL_Proxy=socks5h://localhost:1081
-CURL_Proxy=$(printenv CURL_Proxy || true)
-[ ! -z "$CURL_Proxy" ] && set_proxy="-x $CURL_Proxy"
+[ ! -z "${CURL_Proxy:-}" ] && set_proxy="-x $CURL_Proxy"
 
 curl https://api.openai.com/v1/chat/completions \
   $set_proxy                                  \
@@ -51,9 +50,9 @@ jq -r .choices[].message.content $ans_file || cat $ans_file
 
 {
   echo -e "\n#### QA"
-  yq -P eval .  $ques_file
+  yq -P -oy eval .  $ques_file
   echo -e "---"
-  yq -P eval .  $ans_file
+  yq -P -oy eval .  $ans_file
 } >> $save_to/chatgpt_QA_$(date +%F).yaml
 
 rm $ques_file $ans_file
