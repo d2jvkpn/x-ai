@@ -4,14 +4,13 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 for m in yq jq curl; do
-   command -v $m > /dev/null || { >&2 echo "command $m not found"; exit 1; }
+    command -v $m > /dev/null || { >&2 echo "command $m not found"; exit 1; }
 done
 
-save_to=~/.chatgpt/chatgp-requests
-mkdir -p $save_to
+app_dir=~/.local/apps/chatgpt
+mkdir -p $app_dir/data
 # token=${ChatGPT_Token:-Your_Default_ChatGPT_API_Key}
-
-[ -f ~/.chatgpt/env ] && source ~/.chatgpt/env
+[ -f $app_dir/env ] && source $app_dir/env
 
 [ $# -eq 0 ] && { >&2 echo "Pass your question as argument(s)!"; exit 1; }
 [ -z "${ChatGPT_Token}" ] && { >&2 echo "ChatGPT_Token is unset"; exit 1; }
@@ -24,8 +23,8 @@ fi
 tag=$(date +%FT%T-%s | sed 's/:/-/g')
 echo ">>> $tag: $question"
 
-ques_file=$save_to/${tag}_quesiton.json
-ans_file=$save_to/${tag}_answer.json
+ques_file=$app_dir/data/${tag}_quesiton.json
+ans_file=$app_dir/data/${tag}_answer.json
 
 # --arg model "${ChatGPT_Model:-gpt-3.5-turbo}" \
 jq -n \
@@ -49,10 +48,10 @@ curl https://api.openai.com/v1/chat/completions \
 jq -r .choices[].message.content $ans_file || cat $ans_file
 
 {
-  echo -e "\n#### QA"
-  yq -P -oy eval .  $ques_file
-  echo -e "---"
-  yq -P -oy eval .  $ans_file
-} >> $save_to/chatgpt_QA_$(date +%F).yaml
+    echo -e "\n#### QA"
+    yq -P -oy eval .  $ques_file
+    echo -e "---"
+    yq -P -oy eval .  $ans_file
+} >> $app_dir/data/chatgpt_QA_$(date +%F).yaml
 
 rm $ques_file $ans_file

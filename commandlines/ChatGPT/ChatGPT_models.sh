@@ -3,7 +3,10 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-[ -s ~/.chatgpt/env ] && source ~/.chatgpt/env
+app_dir=~/.local/apps/chatgpt
+mkdir -p $app_dir/data
+# token=${ChatGPT_Token:-Your_Default_ChatGPT_API_Key}
+[ -f $app_dir/env ] && source $app_dir/env
 
 set_proxy=""
 # CURL_Proxy=socks5h://localhost:1081
