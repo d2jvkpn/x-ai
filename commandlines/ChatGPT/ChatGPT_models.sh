@@ -15,7 +15,7 @@ CURL_Proxy=$(printenv CURL_Proxy || true)
 
 curl https://api.openai.com/v1/models \
   -H "Authorization: Bearer $ChatGPT_Token" \
-  $set_proxy
+  $set_proxy > OpenAI_Models.$(date +%s-%F).json
   # -H "OpenAI-Organization: $OPENAI_ORG_ID" > OpenAI_Models.json
 
 exit
