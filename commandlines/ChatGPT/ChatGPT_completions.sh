@@ -28,23 +28,24 @@ echo ">>> $tag: $question"
 ques_file=$save_to/${tag}_quesiton.json
 ans_file=$save_to/${tag}_answer.json
 
+# --arg model "${ChatGPT_Model:-gpt-3.5-turbo}" \
 jq -n \
-  --arg model "${ChatGPT_Model:-gpt-3.5-turbo}" \
+  --arg model "${ChatGPT_Model:-gpt-4}" \
   --arg content "$question" \
   --argjson max_tokens "${ChatGPT_MaxTokens:-1024}" \
   --argjson temperature "${ChatGPT_Temperature:-1.0}" \
-  '{model: $model, messages: [{"role": "user", "content": $content}], max_tokens: $max_tokens, temperature: $temperature}' > $ques_file
+  '{model: $model, messages: [{"role": "user", "content": $content}],
+    max_tokens: $max_tokens, temperature: $temperature}' > $ques_file
 
 set_proxy=""
-# CURL_Proxy=socks5h://localhost:1080
+# CURL_Proxy=socks5h://localhost:1081
 CURL_Proxy=$(printenv CURL_Proxy || true)
 [ ! -z "$CURL_Proxy" ] && set_proxy="-x $CURL_Proxy"
 
 curl https://api.openai.com/v1/chat/completions \
-  $set_proxy                               \
-  -x socks5h://localhost:1081              \
-  -H 'Content-Type: application/json'      \
-  -H "Authorization: Bearer $token"        \
+  $set_proxy                                  \
+  -H 'Content-Type: application/json'         \
+  -H "Authorization: Bearer $ChatGPT_Token"   \
   -d @$ques_file > $ans_file || { rm $ans_file; exit 1; }
 
 jq -r .choices[].message.content $ans_file || cat $ans_file
