@@ -5,17 +5,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 app_dir=~/.local/apps/chatgpt
 mkdir -p $app_dir/data
-# token=${ChatGPT_Token:-Your_Default_ChatGPT_API_Key}
+# ChatGPT_Token=Your_OPENAI_API_Key
 [ -f $app_dir/env ] && source $app_dir/env
 
-set_proxy=""
-# CURL_Proxy=socks5h://localhost:1081
-CURL_Proxy=$(printenv CURL_Proxy || true)
-[ ! -z "$CURL_Proxy" ] && set_proxy="-x $CURL_Proxy"
-
-curl https://api.openai.com/v1/models \
-  -H "Authorization: Bearer $ChatGPT_Token" \
-  $set_proxy > OpenAI_Models.$(date +%s-%F).json
+# CURL_Proxy='-x socks5h://localhost:1081'
+curl https://api.openai.com/v1/models ${CURL_Proxy:-} \
+  -H "Authorization: Bearer $ChatGPT_Token" > OpenAI_Models.$(date +%s-%F).json
   # -H "OpenAI-Organization: $OPENAI_ORG_ID" > OpenAI_Models.json
 
 exit

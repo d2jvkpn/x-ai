@@ -9,7 +9,7 @@ done
 
 app_dir=~/.local/apps/chatgpt
 mkdir -p $app_dir/data
-# token=${ChatGPT_Token:-Your_Default_ChatGPT_API_Key}
+# ChatGPT_Token=Your_OPENAI_API_Key
 [ -f $app_dir/env ] && source $app_dir/env
 
 [ $# -eq 0 ] && { >&2 echo "Pass your question as argument(s)!"; exit 1; }
@@ -35,14 +35,9 @@ jq -n \
   '{model: $model, messages: [{"role": "user", "content": $content}],
     max_tokens: $max_tokens, temperature: $temperature}' > $ques_file
 
-set_proxy=""
-# CURL_Proxy=socks5h://localhost:1081
-[ ! -z "${CURL_Proxy:-}" ] && set_proxy="-x $CURL_Proxy"
-
-curl https://api.openai.com/v1/chat/completions \
-  $set_proxy                                  \
-  -H 'Content-Type: application/json'         \
-  -H "Authorization: Bearer $ChatGPT_Token"   \
+# CURL_Proxy='-x socks5h://localhost:1081'
+curl https://api.openai.com/v1/chat/completions ${CURL_Proxy:-} \
+  -H 'Content-Type: application/json' -H "Authorization: Bearer $ChatGPT_Token" \
   -d @$ques_file > $ans_file || { rm $ans_file; exit 1; }
 
 jq -r .choices[].message.content $ans_file || cat $ans_file
