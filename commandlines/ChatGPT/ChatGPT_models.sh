@@ -3,6 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+[ -s ~/.chatgpt/env ] && source ~/.chatgpt/env
+
 set_proxy=""
 # CURL_Proxy=socks5h://localhost:1081
 CURL_Proxy=$(printenv CURL_Proxy || true)

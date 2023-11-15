@@ -12,7 +12,6 @@ mkdir -p $save_to
 # token=${ChatGPT_Token:-Your_Default_ChatGPT_API_Key}
 
 [ -f ~/.chatgpt/env ] && source ~/.chatgpt/env
-token=${ChatGPT_Token}
 
 [ $# -eq 0 ] && { >&2 echo "Pass your question as argument(s)!"; exit 1; }
 [ -z "${ChatGPT_Token}" ] && { >&2 echo "ChatGPT_Token is unset"; exit 1; }
