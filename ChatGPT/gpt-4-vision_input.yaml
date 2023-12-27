@@ -1,0 +1,11 @@
+openai:
+  api_key: sk-XXXXXXXX
+  url: https://api.openai.com
+  model: gpt-4-vision-preview
+  prompt: XXXXXXXX
+
+items:
+- name: title-01
+  images:
+  - pic_0001.jpg
+  - pic_0002.jpg
