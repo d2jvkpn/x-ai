@@ -10,6 +10,9 @@ cargo install --git https://github.com/rustformers/llm llm-cli
 llm --version
 
 exit
+
+[ -s .env ] && source .env
+# export ai_models=~/Downloads/ai_models
 ai_models=${ai_models:-~/Downloads/ai_models}
 prompt=$ai_models/prompt.txt
 [ -s $prompt ] || echo -e "{{PROMPT}}" > $prompt
