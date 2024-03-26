@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 for m in yq jq curl; do
     command -v $m > /dev/null || { >&2 echo "command $m not found"; exit 1; }
@@ -36,7 +35,7 @@ jq -n \
     max_tokens: $max_tokens, temperature: $temperature}' > $ques_file
 
 # CURL_Proxy='-x socks5h://localhost:1081'
-curl https://api.openai.com/v1/chat/completions ${CURL_Proxy:-} \
+curl --silent https://api.openai.com/v1/chat/completions ${CURL_Proxy:-} \
   -H 'Content-Type: application/json' -H "Authorization: Bearer $ChatGPT_Token" \
   -d @$ques_file > $ans_file || { rm $ans_file; exit 1; }
 
