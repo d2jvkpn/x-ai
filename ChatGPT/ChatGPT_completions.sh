@@ -34,8 +34,8 @@ jq -n \
   '{model: $model, messages: [{"role": "user", "content": $content}],
     max_tokens: $max_tokens, temperature: $temperature}' > $ques_file
 
-# CURL_Proxy='-x socks5h://localhost:1081'
-curl --silent https://api.openai.com/v1/chat/completions ${CURL_Proxy:-} \
+# CURL_Proxy='-x socks5h://localhost:1081', --silent
+curl https://api.openai.com/v1/chat/completions ${CURL_Proxy:-} \
   -H 'Content-Type: application/json' -H "Authorization: Bearer $ChatGPT_Token" \
   -d @$ques_file > $ans_file || { rm $ans_file; exit 1; }
 
