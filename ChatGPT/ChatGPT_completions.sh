@@ -19,15 +19,17 @@ if [[ "$question" == @* ]]; then
     question=$(cat ${question:1})
 fi
 
+# --arg model "${ChatGPT_Model:-gpt-3.5-turbo}" \
+ChatGPT_Model=${ChatGPT_Model:-gpt-4-turbo}
+
 tag=$(date +%FT%T-%s | sed 's/:/-/g')
-echo ">>> $tag: $question"
+echo "==> $ChatGPT_Model@$tag: $question"
 
 ques_file=$app_dir/data/${tag}_quesiton.json
 ans_file=$app_dir/data/${tag}_answer.json
 
-# --arg model "${ChatGPT_Model:-gpt-3.5-turbo}" \
 jq -n \
-  --arg model "${ChatGPT_Model:-gpt-4}" \
+  --arg model "$ChatGPT_Model" \
   --arg content "$question" \
   --argjson max_tokens "${ChatGPT_MaxTokens:-1024}" \
   --argjson temperature "${ChatGPT_Temperature:-1.0}" \
