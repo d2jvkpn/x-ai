@@ -10,18 +10,19 @@ done
 #### 2.
 app_dir=~/apps/chatgpt
 config=$app_dir/configs/chatgpt.yaml
+section=${section:-chatgpt}
 
 ls $config > /dev/null
 mkdir -p $app_dir/data
 
 # OPENAI_API_Key
-api_key=$(yq .chatgpt.api_key $config)
+api_key=$(yq ".$section.api_key" $config)
 
 # gpt-3.5-turbo gpt-4-turbo gpt-4 gpt-4o
-model=$(yq .chatgpt.model $config)
+model=$(yq ".$section.model" $config)
 
 # -x socks5h://localhost:1080
-proxy=$(yq .chatgpt.proxy $config)
+proxy=$(yq ".$section.proxy" $config)
 
 if [[ "$api_key$model$proxy" == *"null"* ]]; then
     >&2 echo "invalid config: $config"
