@@ -2,6 +2,11 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
+[ $# -eq 0 ] && {
+    >&2 echo "Hello! How can I assist you today?"
+    exit 0
+}
+
 #### 1.
 for m in yq jq curl; do
     command -v $m > /dev/null || { >&2 echo "command $m not found"; exit 1; }
@@ -10,19 +15,19 @@ done
 #### 2.
 app_dir=~/apps/chatgpt
 config=$app_dir/configs/chatgpt.yaml
-section=${section:-chatgpt}
+account=${account:-chatgpt}
 
 ls $config > /dev/null
 mkdir -p $app_dir/data
 
 # OPENAI_API_Key
-api_key=$(yq ".$section.api_key" $config)
+api_key=$(yq ".$account.api_key" $config)
 
 # gpt-3.5-turbo gpt-4-turbo gpt-4 gpt-4o
-model=$(yq ".$section.model" $config)
+model=$(yq ".$account.model" $config)
 
 # -x socks5h://localhost:1080
-proxy=$(yq ".$section.proxy" $config)
+proxy=$(yq ".$account.proxy" $config)
 
 if [[ "$api_key$model$proxy" == *"null"* ]]; then
     >&2 echo "invalid config: $config"
